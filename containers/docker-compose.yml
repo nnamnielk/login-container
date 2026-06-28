@@ -1,0 +1,98 @@
+services:
+  # ── host‑level sunshine streamer ───────────────────────────────────
+  sunshine:
+    image: linuxserver/sunshine:latest
+    container_name: sunshine-host
+    network_mode: host
+    privileged: true
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+    volumes:
+      - sunshine-config:/config
+      - sunshine-cache:/var/cache/sunshine
+    devices:
+      - /dev/dri:/dev/dri
+    restart: unless-stopped
+    profiles:
+      - full
+
+  # ── user alice ────────────────────────────────────────────────────
+  alice:
+    build: .
+    image: ubuntu-riced:latest
+    container_name: user-alice
+    hostname: alice-box
+    environment:
+      - CONTAINER_USER=alice
+      - SSH_PORT=2201
+      - VNC_PORT=5901
+      - NOVNC_PORT=6081
+      - JUPYTER_PORT=8888
+      - RESOLUTION=1920x1080x24
+      # Inject an ssh pubkey for alice (optional)
+      # - SSH_PUBLIC_KEY=ssh-ed25519 AAAAC3...
+    ports:
+      - "2201:2201"     # SSH
+      - "5901:5901"     # VNC (direct)
+      - "6081:6081"     # noVNC (web)
+      - "8888:8888"     # JupyterLab
+    volumes:
+      # ── persistent OS‑like layers ─────────────────────────────────
+      - alice-home:/home/alice
+      - alice-opt:/opt
+      - alice-etc:/etc
+      - alice-var:/var
+      - alice-usr-local:/usr/local
+    tmpfs:
+      - /tmp:exec
+      - /run
+    shm_size: 2gb
+    restart: unless-stopped
+
+  # ── user bob ──────────────────────────────────────────────────────
+  bob:
+    build: .
+    image: ubuntu-riced:latest
+    container_name: user-bob
+    hostname: bob-box
+    environment:
+      - CONTAINER_USER=bob
+      - SSH_PORT=2202
+      - VNC_PORT=5902
+      - NOVNC_PORT=6082
+      - JUPYTER_PORT=8889
+      - RESOLUTION=1920x1080x24
+      # - SSH_PUBLIC_KEY=ssh-ed25519 AAAAC3...
+    ports:
+      - "2202:2202"     # SSH
+      - "5902:5902"     # VNC (direct)
+      - "6082:6082"     # noVNC (web)
+      - "8889:8889"     # JupyterLab
+    volumes:
+      # ── persistent OS‑like layers ─────────────────────────────────
+      - bob-home:/home/bob
+      - bob-opt:/opt
+      - bob-etc:/etc
+      - bob-var:/var
+      - bob-usr-local:/usr/local
+    tmpfs:
+      - /tmp:exec
+      - /run
+    shm_size: 2gb
+    restart: unless-stopped
+
+volumes:
+  alice-home:
+  alice-opt:
+  alice-etc:
+  alice-var:
+  alice-usr-local:
+  bob-home:
+  bob-opt:
+  bob-etc:
+  bob-var:
+  bob-usr-local:
+  sunshine-config:
+  sunshine-cache:

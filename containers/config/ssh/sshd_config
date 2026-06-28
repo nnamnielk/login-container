@@ -1,0 +1,9 @@
+# Allow root login with key only
+PermitRootLogin prohibit-password
+PasswordAuthentication yes
+PubkeyAuthentication yes
+X11Forwarding yes
+PrintMotd no
+UsePAM yes
+
+# User-specific configs go in /etc/ssh/sshd_config.d/

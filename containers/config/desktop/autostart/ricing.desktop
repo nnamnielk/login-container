@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=RiceApply
+Exec=/usr/local/bin/apply-ricing.sh
+X-GNOME-Autostart-enabled=true
+NoDisplay=true
