@@ -31,8 +31,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     arc-theme papirus-icon-theme \
     # terminal + shell niceties
     kitty zsh git unzip \
-    # jupyterlab
-    jupyter-notebook python3-pip python3-dev \
+    # python + pip
+    python3-pip python3-dev python3-venv \
     # useful tools
     htop neofetch bat eza fd-find ripgrep nano vim \
     # build essentials (for hermes/codex)
