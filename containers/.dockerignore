@@ -1,0 +1,30 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# GitHub
+.github
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+
+# Build artifacts
+*.pyc
+__pycache__
+*.egg-info
+
+# README
+README.md
+LICENSE
+
+# Compose
+docker-compose.override.yml

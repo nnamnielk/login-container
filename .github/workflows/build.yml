@@ -1,0 +1,66 @@
+name: Build & Test
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'containers/**'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'containers/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: containers
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        run: docker compose build --no-cache
+
+      - name: Smoke test — start alice
+        run: |
+          docker compose up -d alice
+          # Wait for container to be healthy
+          for i in $(seq 1 30); do
+            if docker exec user-alice pgrep -f cinnamon-session > /dev/null 2>&1; then
+              echo "Cinnamon session started"
+              break
+            fi
+            echo "Waiting for desktop... ($i/30)"
+            sleep 5
+          done
+
+      - name: Verify services
+        run: |
+          echo "=== Container status ==="
+          docker ps --filter name=user-alice --format '{{.Names}} {{.Status}}'
+
+          echo "=== Processes ==="
+          docker exec user-alice ps aux | grep -E 'cinnamon|Xvfb|x11vnc|jupyter|sshd|websockify' || true
+
+          echo "=== SSH ready ==="
+          docker exec user-alice pgrep sshd && echo "SSHD: OK"
+
+          echo "=== JupyterLab ready ==="
+          curl -s -o /dev/null -w "Jupyter HTTP: %{http_code}" http://localhost:8888 || echo " (not expected on GitHub runner)"
+
+          echo "=== noVNC ready ==="
+          curl -s -o /dev/null -w "noVNC HTTP: %{http_code}" http://localhost:6081 || echo " (not expected on GitHub runner)"
+
+      - name: Docker image size
+        run: |
+          docker images ubuntu-riced:latest --format 'Image: {{.Repository}}:{{.Tag}} | Size: {{.Size}}'
+
+      - name: Cleanup
+        if: always()
+        run: docker compose down -v --remove-orphans
