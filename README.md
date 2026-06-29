@@ -25,7 +25,7 @@ Each user gets an isolated container with:
 - **Shell**: zsh + powerlevel10k + modern CLI tools (eza, bat, ripgrep)
 - **SSH**: password or public-key auth on a dedicated port
 - **JupyterLab**: token-free, root-dir scoped to user home
-- **AI tools**: Hermes Agent + Codex Desktop (auto-installed on first boot)
+- **AI tools**: Hermes Agent + Codex CLI + Hermes WebUI (auto-installed on first boot)
 
 Theming: Nordic-darker GTK theme + Papirus icons + solid Nord background (#2E3440).
 
@@ -54,6 +54,7 @@ make web-bob     # → http://localhost:6082/vnc.html
 | noVNC (web)   | http://localhost:6081/vnc.html | http://localhost:6082/vnc.html |
 | VNC (direct)  | localhost:5901     | localhost:5902     |
 | JupyterLab    | http://localhost:8888 | http://localhost:8889 |
+| **Hermes WebUI** | http://localhost:8787 | http://localhost:8788 |
 
 Default password for all users: `changeme`
 

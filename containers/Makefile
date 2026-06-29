@@ -36,7 +36,9 @@ logs:
 
 # ── open in browser ──────────────────────────────────────────────────
 web-alice:
-	@echo "→ http://localhost:6081/vnc.html"
+	@echo "→ http://localhost:6081/vnc.html  (desktop)"
+	@echo "→ http://localhost:8787            (Hermes WebUI)"
 
 web-bob:
-	@echo "→ http://localhost:6082/vnc.html"
+	@echo "→ http://localhost:6082/vnc.html  (desktop)"
+	@echo "→ http://localhost:8788            (Hermes WebUI)"

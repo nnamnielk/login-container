@@ -20,12 +20,15 @@ if ! id "$USERNAME" &>/dev/null; then
     chown -R "$USERNAME:$USERNAME" "/home/$USERNAME"
 fi
 
-# ── hermes agent + codex desktop (first-run install) ────────────────────
+# ── hermes agent + codex + webui (first-run install) ──────────────────
 if [ ! -f /opt/hermes/.installed ]; then
     /usr/local/bin/install-hermes.sh "$USERNAME" && touch /opt/hermes/.installed || true
 fi
 if [ ! -f /opt/codex/.installed ]; then
     /usr/local/bin/install-codex.sh "$USERNAME" && touch /opt/codex/.installed || true
+fi
+if [ ! -f /opt/hermes-webui/.installed ]; then
+    /usr/local/bin/install-webui.sh "$USERNAME" && touch /opt/hermes-webui/.installed || true
 fi
 
 # ── ssh key injection ──────────────────────────────────────────────────

@@ -30,6 +30,7 @@ services:
       - VNC_PORT=5901
       - NOVNC_PORT=6081
       - JUPYTER_PORT=8888
+      - WEBUI_PORT=8787
       - RESOLUTION=1920x1080x24
       # Inject an ssh pubkey for alice (optional)
       # - SSH_PUBLIC_KEY=ssh-ed25519 AAAAC3...
@@ -38,6 +39,7 @@ services:
       - "5901:5901"     # VNC (direct)
       - "6081:6081"     # noVNC (web)
       - "8888:8888"     # JupyterLab
+      - "8787:8787"     # Hermes WebUI
     volumes:
       # ── persistent OS‑like layers ─────────────────────────────────
       - alice-home:/home/alice
@@ -63,6 +65,7 @@ services:
       - VNC_PORT=5902
       - NOVNC_PORT=6082
       - JUPYTER_PORT=8889
+      - WEBUI_PORT=8788
       - RESOLUTION=1920x1080x24
       # - SSH_PUBLIC_KEY=ssh-ed25519 AAAAC3...
     ports:
@@ -70,6 +73,7 @@ services:
       - "5902:5902"     # VNC (direct)
       - "6082:6082"     # noVNC (web)
       - "8889:8889"     # JupyterLab
+      - "8788:8788"     # Hermes WebUI
     volumes:
       # ── persistent OS‑like layers ─────────────────────────────────
       - bob-home:/home/bob
